@@ -1,0 +1,33 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cartservice-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: CartService
+  template:
+    metadata:
+      labels:
+        app: Cartservice
+    spec:
+      containers:
+      - name: cartservicerepos
+        image: truyumcr.azurecr.io/cartservicerepos:latest
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: dsconfigsn
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cartservice
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: Cartservice
